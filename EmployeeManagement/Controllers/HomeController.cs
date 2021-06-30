@@ -1,5 +1,6 @@
 ﻿using EmployeeManagement.Models;
 using EmployeeManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,7 @@ namespace EmployeeManagement.Controllers
             _employeeRepository = employeeRepository;
             this.hostingEnvironment = hostingEnvironment;
         }
-
+        [AllowAnonymous]
         public ViewResult Index()
         {
             // retrieve all the employees
@@ -31,11 +32,11 @@ namespace EmployeeManagement.Controllers
             // Pass the list of employees to the view
             return View(model);
         }
-
+        [AllowAnonymous]
         public ViewResult Details(int? id)
 
         {
-            throw new Exception("Error in Details View");
+            //throw new Exception("Error in Details View");
             Employee employee = _employeeRepository.GetEmployee(id.Value);
             if (employee== null)
             {
@@ -52,11 +53,13 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ViewResult Create()
         {
             return View();
         }
         [HttpGet]
+        [Authorize]
         public ViewResult Edit(int id)
         {
             Employee employee = _employeeRepository.GetEmployee(id);
@@ -72,6 +75,7 @@ namespace EmployeeManagement.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(EmployeeCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -92,6 +96,7 @@ namespace EmployeeManagement.Controllers
             return View();
         }
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(EmployeeEditViewModel model)
         {
             if (ModelState.IsValid)

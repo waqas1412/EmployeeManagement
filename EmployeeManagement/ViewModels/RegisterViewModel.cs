@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EmployeeManagement.Utilities;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,7 +11,9 @@ namespace EmployeeManagement.ViewModels
     public class RegisterViewModel
     {
         [Required]
+        [Remote(action:"IsEmailInUse",controller:"Account")]
         [EmailAddress]
+        [ValidEmailDomain(allowedDomain: "gmail.com", ErrorMessage ="Email must be Gmail.com")]
         public string Email { get; set; }
 
         [Required]
@@ -21,5 +25,6 @@ namespace EmployeeManagement.ViewModels
         [Compare("Password",
             ErrorMessage = "Password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        public string City { get; set; }
     }
 }
